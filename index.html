@@ -117,6 +117,7 @@ input[type=number],input[type=text]{font:inherit;padding:8px 10px;border-radius:
 
 <div class="top"><div class="in">
   <h1>Cello Estudio</h1>
+  <span id="aud" class="muted small" aria-live="polite">Audio: sin iniciar</span>
   <nav role="tablist" aria-label="Secciones" id="tabs">
     <button role="tab" data-tab="afinador">Afinador</button>
     <button role="tab" data-tab="metronomo">Metrónomo</button>
@@ -333,13 +334,19 @@ function streak(){
 
 /* ---------- audio ---------- */
 let ctx=null,master=null;
+try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+function audStatus(){const el=$('#aud');if(el)el.textContent='Audio: '+(ctx?ctx.state:'sin iniciar')}
 function audio(){
   if(!ctx){
     const AC=window.AudioContext||window.webkitAudioContext;ctx=new AC();
+    try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+    ctx.onstatechange=audStatus;
     const comp=ctx.createDynamicsCompressor();master=ctx.createGain();master.gain.value=.9;
     master.connect(comp);comp.connect(ctx.destination);
+    try{const b=ctx.createBuffer(1,1,22050),u=ctx.createBufferSource();u.buffer=b;u.connect(ctx.destination);u.start(0)}catch(e){}
   }
   if(ctx.state!=='running'){try{ctx.resume()}catch(e){}}
+  audStatus();
   return ctx;
 }
 let wave=null;
