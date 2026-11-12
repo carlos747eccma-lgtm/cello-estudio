@@ -5,6 +5,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: write
+
 jobs:
   ios:
     runs-on: macos-latest
@@ -24,3 +27,8 @@ jobs:
         with:
           name: CelloEstudio-ipa
           path: CelloEstudio.ipa
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ipa-${{ github.run_number }}
+          name: Cello Estudio para iPad (compilación ${{ github.run_number }})
+          files: CelloEstudio.ipa
