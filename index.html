@@ -137,9 +137,9 @@ input[type=number],input[type=text]{font:inherit;padding:8px 10px;border-radius:
       <div class="row" id="inst"></div>
       <div class="row">
         <span>La4 =</span>
-        <button class="step" id="a4-" aria-label="Bajar La4">−</button>
+        <button class="step" id="a4minus" aria-label="Bajar La4">−</button>
         <span class="val" id="a4v">440 Hz</span>
-        <button class="step" id="a4+" aria-label="Subir La4">+</button>
+        <button class="step" id="a4plus" aria-label="Subir La4">+</button>
         <button class="chip" data-a4="440">440</button>
         <button class="chip" data-a4="442">442</button>
       </div>
@@ -161,9 +161,9 @@ input[type=number],input[type=text]{font:inherit;padding:8px 10px;border-radius:
       <div class="row" id="dnotes"></div>
       <div class="row">
         <span>Octava</span>
-        <button class="step" id="do-" aria-label="Octava más grave">−</button>
+        <button class="step" id="dominus" aria-label="Octava más grave">−</button>
         <span class="val" id="dov">2</span>
-        <button class="step" id="do+" aria-label="Octava más aguda">+</button>
+        <button class="step" id="doplus" aria-label="Octava más aguda">+</button>
       </div>
       <div class="row">
         <button class="chip" id="dfifth" aria-pressed="false">+ Quinta</button>
@@ -520,7 +520,7 @@ function renderInst(){
   });
 }
 function setA4(v){T.a4=Math.max(415,Math.min(466,v));store.set('a4',T.a4);$('#a4v').textContent=T.a4+' Hz';droneRefresh()}
-$('#a4-').onclick=()=>setA4(T.a4-1);$('#a4+').onclick=()=>setA4(T.a4+1);
+$('#a4minus').onclick=()=>setA4(T.a4-1);$('#a4plus').onclick=()=>setA4(T.a4+1);
 $$('[data-a4]').forEach(b=>b.onclick=()=>setA4(+b.dataset.a4));
 
 /* ---------- dron ---------- */
@@ -554,8 +554,8 @@ function renderDrone(){
   $('#djust').hidden=!D.fifth;droneInfo();
 }
 $('#dbtn').onclick=()=>D.on?droneStop():droneStart();
-$('#do-').onclick=()=>{D.oct=Math.max(1,D.oct-1);store.set('dOct',D.oct);renderDrone();droneRefresh()};
-$('#do+').onclick=()=>{D.oct=Math.min(6,D.oct+1);store.set('dOct',D.oct);renderDrone();droneRefresh()};
+$('#dominus').onclick=()=>{D.oct=Math.max(1,D.oct-1);store.set('dOct',D.oct);renderDrone();droneRefresh()};
+$('#doplus').onclick=()=>{D.oct=Math.min(6,D.oct+1);store.set('dOct',D.oct);renderDrone();droneRefresh()};
 $('#dfifth').onclick=()=>{D.fifth=!D.fifth;renderDrone();droneRefresh()};
 $('#doct').onclick=()=>{D.octv=!D.octv;renderDrone();droneRefresh()};
 $('#djust').onclick=()=>{D.just=!D.just;renderDrone();droneRefresh()};
